@@ -68,19 +68,6 @@ suwon/
 - 반응형 웹 디자인
 - GitHub Pages 호스팅
 
----
-
-## 🤝 기여하기
-
-수원시민 여러분의 의견을 기다립니다!
-- Issue를 통한 제안
-- Pull Request 환영
-
----
-
-## 📞 문의
-
-수원특례시 정책기획과
 - 전화: 031-228-XXXX
 - 이메일: policy@suwon.go.kr
 
