@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>수원시 통합 정책 패키지 - 함께 만드는 행복한 수원</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -114,6 +117,7 @@
             justify-content: center;
             font-size: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
         }
 
         .card-title {
@@ -152,7 +156,7 @@
         }
 
         .feature-list li:before {
-            content: "✓";
+            content: "■";
             position: absolute;
             left: 10px;
             color: #27ae60;
@@ -304,18 +308,51 @@
             }
         }
 
-        /* Loading Animation */
-        .loading-bar {
-            height: 4px;
-            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #9B59B6);
-            animation: loading 2s ease infinite;
-            margin-top: 20px;
-            border-radius: 2px;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes loading {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -334,7 +371,7 @@
             <!-- Policy 1: 온마을 육아품앗이 -->
             <div class="policy-card child-care">
                 <div class="card-header child-care">
-                    <div class="card-icon">👨‍👩‍👧‍👦</div>
+                    <div class="card-icon">🏠</div>
                     <h2 class="card-title">온마을 육아품앗이</h2>
                     <p class="card-subtitle">맞벌이 가정의 육아부담 해결 패키지</p>
                 </div>
@@ -377,7 +414,7 @@
             <!-- Policy 2: 홀로서기 징검다리 -->
             <div class="policy-card youth">
                 <div class="card-header youth">
-                    <div class="card-icon">🏘️</div>
+                    <div class="card-icon">🌉</div>
                     <h2 class="card-title">홀로서기 징검다리</h2>
                     <p class="card-subtitle">청년 1인가구 사회적 고립 해결</p>
                 </div>
@@ -420,7 +457,7 @@
             <!-- Policy 3: 디딤돌 백세누리 -->
             <div class="policy-card senior">
                 <div class="card-header senior">
-                    <div class="card-icon">👴📱</div>
+                    <div class="card-icon">💻</div>
                     <h2 class="card-title">디딤돌 백세누리</h2>
                     <p class="card-subtitle">노인층 디지털 소외 해결</p>
                 </div>
@@ -461,41 +498,150 @@
             </div>
         </div>
 
-        <div class="loading-bar"></div>
+        <!-- Progress Indicator -->
+        <div class="progress-indicator" style="text-align: center; color: white; margin-top: 40px; padding: 20px;">
+            <h3 style="font-size: 24px; margin-bottom: 10px;">✨ 수원시 정책 혁신의 시작</h3>
+            <p style="opacity: 0.9;">시민과 함께 만들어가는 스마트 도시 수원</p>
+        </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle" style="color: #333; margin-bottom: 20px;"></h2>
+            <div id="modalBody" style="color: #666; line-height: 1.8;"></div>
+        </div>
     </div>
 
     <script>
-        // Add interactive functionality
-        function showDetail(policy) {
-            const messages = {
-                'childcare': '온마을 육아품앗이 상세 정보 페이지로 이동합니다...',
-                'youth': '홀로서기 징검다리 상세 정보 페이지로 이동합니다...',
-                'senior': '디딤돌 백세누리 상세 정보 페이지로 이동합니다...'
-            };
-            alert(messages[policy]);
-        }
+        // Modal functionality
+        const modal = document.getElementById('detailModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.getElementsByClassName('close')[0];
 
-        // Add scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+        const policyDetails = {
+            'childcare': {
+                title: '🏠 온마을 육아품앗이 - 상세 정보',
+                content: `
+                    <h3>📋 사업 개요</h3>
+                    <p>수원시 맞벌이 가정의 육아 부담을 해결하기 위한 지역사회 기반 통합 육아 지원 시스템입니다.</p>
+                    
+                    <h3>🎯 주요 서비스</h3>
+                    <ul>
+                        <li><strong>AI 육아 도우미:</strong> 24시간 육아 상담 챗봇 서비스</li>
+                        <li><strong>품앗이 매칭:</strong> 지역 내 육아 품앗이 파트너 자동 매칭</li>
+                        <li><strong>긴급 돌봄:</strong> 갑작스런 상황 발생 시 긴급 돌봄 연계</li>
+                        <li><strong>육아 정보 허브:</strong> 수원시 육아 정책 원스톱 안내</li>
+                    </ul>
+                    
+                    <h3>💡 기대 효과</h3>
+                    <ul>
+                        <li>육아 스트레스 68% 감소 예상</li>
+                        <li>월평균 육아 비용 30만원 절감</li>
+                        <li>이웃 간 신뢰 네트워크 강화</li>
+                    </ul>
+                `
+            },
+            'youth': {
+                title: '🌉 홀로서기 징검다리 - 상세 정보',
+                content: `
+                    <h3>📋 사업 개요</h3>
+                    <p>청년 1인가구의 사회적 고립을 해결하고 지역사회 정착을 돕는 종합 지원 플랫폼입니다.</p>
+                    
+                    <h3>🎯 주요 서비스</h3>
+                    <ul>
+                        <li><strong>커뮤니티 매칭:</strong> 관심사 기반 소모임 자동 추천</li>
+                        <li><strong>생활 정보 공유:</strong> 지역 맛집, 병원, 편의시설 정보 공유</li>
+                        <li><strong>긴급 지원 연결:</strong> 위기상황 시 24시간 상담 연계</li>
+                        <li><strong>정책 알림:</strong> 청년 지원 정책 맞춤형 푸시 알림</li>
+                    </ul>
+                    
+                    <h3>💡 기대 효과</h3>
+                    <ul>
+                        <li>사회적 연결감 82% 향상</li>
+                        <li>수원시 정착률 91% 달성</li>
+                        <li>청년 정책 인지도 2배 증가</li>
+                    </ul>
+                `
+            },
+            'senior': {
+                title: '💻 디딤돌 백세누리 - 상세 정보',
+                content: `
+                    <h3>📋 사업 개요</h3>
+                    <p>어르신들의 디지털 격차를 해소하고 스마트 생활을 지원하는 맞춤형 교육 프로그램입니다.</p>
+                    
+                    <h3>🎯 주요 서비스</h3>
+                    <ul>
+                        <li><strong>1:1 디지털 교육:</strong> 청년 멘토와 함께하는 맞춤 교육</li>
+                        <li><strong>생활 밀착 실습:</strong> 병원 예약, 택시 호출 등 실전 연습</li>
+                        <li><strong>디지털 기기 대여:</strong> 교육용 태블릿 무료 대여</li>
+                        <li><strong>온라인 동아리:</strong> 취미 활동 온라인 커뮤니티 운영</li>
+                    </ul>
+                    
+                    <h3>💡 기대 효과</h3>
+                    <ul>
+                        <li>디지털 활용능력 75% 향상</li>
+                        <li>생활 편의성 88% 개선</li>
+                        <li>세대 간 소통 활성화</li>
+                    </ul>
+                `
+            }
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+        function showDetail(policy) {
+            const detail = policyDetails[policy];
+            if (detail) {
+                modalTitle.innerHTML = detail.title;
+                modalBody.innerHTML = detail.content;
+                modal.style.display = 'block';
+            }
+        }
 
-        document.querySelectorAll('.policy-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Improved scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Apply initial state and observe
+            document.querySelectorAll('.policy-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
         });
+
+        // CSS class for visible state
+        const style = document.createElement('style');
+        style.textContent = `
+            .policy-card.visible {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
