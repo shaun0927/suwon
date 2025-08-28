@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수원시 통합 정책 패키지 - 함께 만드는 행복한 수원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 20px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-top: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Policy Cards Grid */
+        .policies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* Policy Card */
+        .policy-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease backwards;
+        }
+
+        .policy-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .policy-card:nth-child(1) { animation-delay: 0.1s; }
+        .policy-card:nth-child(2) { animation-delay: 0.2s; }
+        .policy-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Card Header with Icon */
+        .card-header {
+            position: relative;
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .card-header.child-care {
+            background: linear-gradient(135deg, #FF6B6B, #FF8787);
+        }
+
+        .card-header.youth {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+        }
+
+        .card-header.senior {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Card Body */
+        .card-body {
+            padding: 30px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding: 12px 0 12px 35px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .feature-list li:hover {
+            background: #f8f9fa;
+            padding-left: 40px;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 10px;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Connection Diagram */
+        .connection-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #e0e0e0;
+        }
+
+        .connection-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .connection-items {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .connection-item {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .connection-item:hover {
+            transform: scale(1.05);
+        }
+
+        .child-care .connection-item { border-color: #FF6B6B; color: #FF6B6B; }
+        .youth .connection-item { border-color: #4ECDC4; color: #4ECDC4; }
+        .senior .connection-item { border-color: #9B59B6; color: #9B59B6; }
+
+        /* Impact Metrics */
+        .impact-section {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .impact-metric {
+            text-align: center;
+            flex: 1;
+        }
+
+        .impact-value {
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .child-care .impact-value { color: #FF6B6B; }
+        .youth .impact-value { color: #4ECDC4; }
+        .senior .impact-value { color: #9B59B6; }
+
+        .impact-label {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Innovation Badge */
+        .innovation-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Interactive Elements */
+        .interactive-demo {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .interactive-demo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .policies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-title {
+                font-size: 24px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #9B59B6);
+            animation: loading 2s ease infinite;
+            margin-top: 20px;
+            border-radius: 2px;
+        }
+
+        @keyframes loading {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>함께 만드는 행복한 수원</h1>
+            <p class="subtitle">시민 맞춤형 통합 정책 패키지</p>
+            <span class="badge">2024 수원특례시 혁신 정책</span>
+        </div>
+
+        <!-- Policy Cards Grid -->
+        <div class="policies-grid">
+            
+            <!-- Policy 1: 온마을 육아품앗이 -->
+            <div class="policy-card child-care">
+                <div class="card-header child-care">
+                    <div class="card-icon">👨‍👩‍👧‍👦</div>
+                    <h2 class="card-title">온마을 육아품앗이</h2>
+                    <p class="card-subtitle">맞벌이 가정의 육아부담 해결 패키지</p>
+                </div>
+                <div class="card-body">
+                    <span class="innovation-badge">AI 기반 혁신</span>
+                    
+                    <ul class="feature-list">
+                        <li>AI 맞춤형 육아 정보 제공</li>
+                        <li>이웃 간 품앗이 네트워크 구축</li>
+                        <li>돌봄-정원 연계 힐링 프로그램</li>
+                        <li>디지털 육아 정보 접근성 향상</li>
+                    </ul>
+
+                    <div class="connection-box">
+                        <div class="connection-title">연계 정책</div>
+                        <div class="connection-items">
+                            <span class="connection-item">다함께돌봄</span>
+                            <span class="connection-item">손바닥정원</span>
+                            <span class="connection-item">디지털지원</span>
+                        </div>
+                    </div>
+
+                    <div class="impact-section">
+                        <div class="impact-metric">
+                            <span class="impact-value">68%↓</span>
+                            <span class="impact-label">육아 스트레스</span>
+                        </div>
+                        <div class="impact-metric">
+                            <span class="impact-value">85%</span>
+                            <span class="impact-label">만족도</span>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo" onclick="showDetail('childcare')">
+                        자세히 알아보기 →
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy 2: 홀로서기 징검다리 -->
+            <div class="policy-card youth">
+                <div class="card-header youth">
+                    <div class="card-icon">🏘️</div>
+                    <h2 class="card-title">홀로서기 징검다리</h2>
+                    <p class="card-subtitle">청년 1인가구 사회적 고립 해결</p>
+                </div>
+                <div class="card-body">
+                    <span class="innovation-badge">네트워크 플랫폼</span>
+                    
+                    <ul class="feature-list">
+                        <li>지역 기반 청년 커뮤니티 매칭</li>
+                        <li>공유 경제 플랫폼 연계</li>
+                        <li>맞춤형 정책 정보 자동 제공</li>
+                        <li>교통카드 연계 활동 추천</li>
+                    </ul>
+
+                    <div class="connection-box">
+                        <div class="connection-title">연계 정책</div>
+                        <div class="connection-items">
+                            <span class="connection-item">1인가구지원</span>
+                            <span class="connection-item">청년정책</span>
+                            <span class="connection-item">교통인프라</span>
+                        </div>
+                    </div>
+
+                    <div class="impact-section">
+                        <div class="impact-metric">
+                            <span class="impact-value">82%↑</span>
+                            <span class="impact-label">사회적 연결</span>
+                        </div>
+                        <div class="impact-metric">
+                            <span class="impact-value">91%</span>
+                            <span class="impact-label">정착률</span>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo" onclick="showDetail('youth')">
+                        자세히 알아보기 →
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy 3: 디딤돌 백세누리 -->
+            <div class="policy-card senior">
+                <div class="card-header senior">
+                    <div class="card-icon">👴📱</div>
+                    <h2 class="card-title">디딤돌 백세누리</h2>
+                    <p class="card-subtitle">노인층 디지털 소외 해결</p>
+                </div>
+                <div class="card-body">
+                    <span class="innovation-badge">단계별 맞춤 교육</span>
+                    
+                    <ul class="feature-list">
+                        <li>세대 간 디지털 멘토링</li>
+                        <li>생활밀착형 디지털 서비스 체험</li>
+                        <li>교통카드 연계 실습 교육</li>
+                        <li>커뮤니티 활동 통합 지원</li>
+                    </ul>
+
+                    <div class="connection-box">
+                        <div class="connection-title">연계 정책</div>
+                        <div class="connection-items">
+                            <span class="connection-item">디지털약자</span>
+                            <span class="connection-item">교통정책</span>
+                            <span class="connection-item">커뮤니티케어</span>
+                        </div>
+                    </div>
+
+                    <div class="impact-section">
+                        <div class="impact-metric">
+                            <span class="impact-value">75%↑</span>
+                            <span class="impact-label">디지털 활용</span>
+                        </div>
+                        <div class="impact-metric">
+                            <span class="impact-value">88%</span>
+                            <span class="impact-label">생활 편의</span>
+                        </div>
+                    </div>
+
+                    <div class="interactive-demo" onclick="showDetail('senior')">
+                        자세히 알아보기 →
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading-bar"></div>
+    </div>
+
+    <script>
+        // Add interactive functionality
+        function showDetail(policy) {
+            const messages = {
+                'childcare': '온마을 육아품앗이 상세 정보 페이지로 이동합니다...',
+                'youth': '홀로서기 징검다리 상세 정보 페이지로 이동합니다...',
+                'senior': '디딤돌 백세누리 상세 정보 페이지로 이동합니다...'
+            };
+            alert(messages[policy]);
+        }
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.policy-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
